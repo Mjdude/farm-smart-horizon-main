@@ -2,7 +2,7 @@
 import React from 'react';
 import { 
   Calendar, 
-  Chart, 
+  BarChart3, 
   Cloud, 
   Users, 
   Settings,
@@ -22,7 +22,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, activeSection, setActi
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Monitor, color: 'text-blue-600' },
     { id: 'crop-monitoring', label: 'Crop Monitoring', icon: Calendar, color: 'text-green-600' },
-    { id: 'market', label: 'Market Intelligence', icon: Chart, color: 'text-purple-600' },
+    { id: 'market', label: 'Market Intelligence', icon: BarChart3, color: 'text-purple-600' },
     { id: 'weather', label: 'Weather Advisory', icon: Cloud, color: 'text-sky-600' },
     { id: 'community', label: 'Community Hub', icon: Users, color: 'text-orange-600' },
     { id: 'ai-assistant', label: 'AI Assistant', icon: Search, color: 'text-indigo-600' },
