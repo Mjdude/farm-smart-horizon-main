@@ -1,0 +1,117 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Agricultural-themed design system */
+
+@layer base {
+  :root {
+    --background: 250 100% 98%;
+    --foreground: 120 40% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 120 40% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 120 40% 15%;
+
+    --primary: 104 44% 35%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 110 25% 95%;
+    --secondary-foreground: 120 40% 15%;
+
+    --muted: 110 25% 95%;
+    --muted-foreground: 120 20% 45%;
+
+    --accent: 104 44% 88%;
+    --accent-foreground: 120 40% 15%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 110 25% 88%;
+    --input: 110 25% 88%;
+    --ring: 104 44% 35%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 120 40% 8%;
+    --foreground: 110 25% 95%;
+
+    --card: 120 40% 10%;
+    --card-foreground: 110 25% 95%;
+
+    --popover: 120 40% 10%;
+    --popover-foreground: 110 25% 95%;
+
+    --primary: 104 44% 45%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 120 40% 15%;
+    --secondary-foreground: 110 25% 95%;
+
+    --muted: 120 40% 15%;
+    --muted-foreground: 110 20% 65%;
+
+    --accent: 120 40% 15%;
+    --accent-foreground: 110 25% 95%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 120 40% 15%;
+    --input: 120 40% 15%;
+    --ring: 104 44% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-inter;
+  }
+
+  .farm-gradient {
+    background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+  }
+
+  .earth-gradient {
+    background: linear-gradient(135deg, #A1887F 0%, #8D6E63 100%);
+  }
+
+  .sky-gradient {
+    background: linear-gradient(135deg, #03A9F4 0%, #E1F5FE 100%);
+  }
+
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
+
+@layer components {
+  .metric-card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-300;
+  }
+
+  .farm-button {
+    @apply bg-farm-green-500 hover:bg-farm-green-600 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 transform hover:scale-105;
+  }
+
+  .status-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .nav-item {
+    @apply flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-farm-green-50 transition-colors duration-200;
+  }
+}

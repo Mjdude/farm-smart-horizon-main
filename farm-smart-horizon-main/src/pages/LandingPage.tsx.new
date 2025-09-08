@@ -1,0 +1,302 @@
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+
+const FeatureCard = ({ icon, titleEn, titleHi, descriptionEn, descriptionHi }: {
+  icon: string;
+  titleEn: string;
+  titleHi: string;
+  descriptionEn: string;
+  descriptionHi: string;
+}) => (
+  <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+    <div className="text-4xl mb-4">{icon}</div>
+    <h3 className="text-xl font-bold mb-2">{titleEn}</h3>
+    <h4 className="text-sm text-gray-500 mb-3">{titleHi}</h4>
+    <p className="text-gray-700 mb-2">{descriptionEn}</p>
+    <p className="text-sm text-gray-600">{descriptionHi}</p>
+  </div>
+);
+
+const TestimonialCard = ({ name, crop, quoteEn, quoteHi, impact }: {
+  name: string;
+  crop: string;
+  quoteEn: string;
+  quoteHi: string;
+  impact: string;
+}) => (
+  <div className="bg-white p-6 rounded-lg shadow-md">
+    <div className="flex items-center mb-4">
+      <div className="bg-gray-200 rounded-full w-12 h-12 flex items-center justify-center text-2xl">
+        👨‍🌾
+      </div>
+      <div className="ml-4">
+        <h4 className="font-semibold">{name}</h4>
+        <p className="text-sm text-gray-600">{crop}</p>
+      </div>
+    </div>
+    <p className="italic mb-4">"{quoteEn}"</p>
+    <p className="text-sm text-gray-600 mb-2">"{quoteHi}"</p>
+    <div className="text-sm font-medium text-green-600">{impact}</div>
+  </div>
+);
+
+const LandingPage = () => {
+  const navigate = useNavigate();
+
+  const features = [
+    {
+      icon: "📸",
+      titleEn: "Snap & Detect",
+      titleHi: "फोटो लें और पहचानें",
+      descriptionEn: "Simply take a photo of your crop leaves and get instant AI-powered disease identification with 95%+ accuracy.",
+      descriptionHi: "बस अपनी फसल की पत्तियों की फोटो लें और 95% से अधिक सटीकता के साथ तुरंत बीमारी की पहचान करें।"
+    },
+    {
+      icon: "👨‍🌾",
+      titleEn: "Smart Solutions",
+      titleHi: "स्मार्ट समाधान",
+      descriptionEn: "Receive personalized treatment recommendations, organic solutions, and preventive measures from agricultural experts.",
+      descriptionHi: "कृषि विशेषज्ञों से व्यक्तिगत उपचार सुझाव, जैविक समाधान और रोकथाम के तरीके प्राप्त करें।"
+    },
+    {
+      icon: "🗣️",
+      titleEn: "Your Language",
+      titleHi: "आपकी भाषा",
+      descriptionEn: "Access the platform in Hindi, English, Telugu, Tamil, and Marathi - making technology accessible for all farmers.",
+      descriptionHi: "हिंदी, अंग्रेजी, तेलुगु, तमिल और मराठी में प्लेटफॉर्म का उपयोग करें - सभी किसानों के लिए तकनीक सुलभ।"
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: "राम प्रसाद शर्मा, उत्तर प्रदेश",
+      crop: "गेहूं और धान",
+      quoteHi: "FarmLive की मदद से मैंने अपनी गेहूं की फसल में रतुआ रोग की शुरुआती पहचान की। समय पर इलाज से 80% फसल बच गई!",
+      quoteEn: "With FarmLive's help, I identified rust disease in my wheat crop early. Timely treatment saved 80% of my harvest!",
+      impact: "Saved ₹2.5 lakhs in potential crop loss"
+    },
+    {
+      name: "सुनीता देवी, राजस्थान",
+      crop: "कपास",
+      quoteHi: "मोबाइल ऐप बहुत आसान है। फोटो लेते ही बीमारी पता चल जाती है। अब डॉक्टर के पास दौड़ना नहीं पड़ता।",
+      quoteEn: "The mobile app is very easy to use. Disease is detected as soon as I take a photo. No need to run to experts anymore.",
+      impact: "Increased yield by 35% this season"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+      {/* Hero Section */}
+      <header className="relative overflow-hidden bg-gradient-to-br from-green-600 to-emerald-700 text-white py-24 md:py-32">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-10 -right-10 w-72 h-72 bg-green-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+          <div className="absolute -bottom-24 -left-20 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-teal-400 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-4000"></div>
+        </div>
+        
+        <div className="relative z-10 container mx-auto px-4 text-center">
+          <div className="inline-block mb-6 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-white/90 border border-white/20">
+            Empowering Farmers, Nourishing India
+          </div>
+          
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <span className="block mb-3">FarmLive Innovations</span>
+            <span className="text-3xl md:text-5xl font-semibold text-emerald-100">
+              AI-Powered Crop Disease Detection
+            </span>
+          </h1>
+          
+          <h2 className="text-xl md:text-2xl mb-8 text-emerald-100 italic">
+            कृत्रिम बुद्धिमत्ता से भारतीय किसानों को सशक्त बनाना
+          </h2>
+          
+          <p className="text-lg md:text-xl mb-10 max-w-3xl mx-auto leading-relaxed text-emerald-50">
+            Detect crop diseases instantly, get expert treatment recommendations, and protect your harvest with cutting-edge technology designed for small and marginal farmers.
+          </p>
+          
+          <div className="flex flex-wrap justify-center gap-8 mt-12 mb-8">
+            {[
+              { value: '95%+', label: 'Accuracy' },
+              { value: '50+', label: 'Diseases' },
+              { value: '10,000+', label: 'Farmers' },
+              { value: '24/7', label: 'Support' }
+            ].map((stat, index) => (
+              <div 
+                key={index}
+                className="group bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="text-3xl md:text-4xl font-bold mb-1 text-white group-hover:text-emerald-100 transition-colors">
+                  {stat.value}
+                </div>
+                <div className="text-sm font-medium text-emerald-100">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-12 space-y-4 sm:space-y-0 sm:space-x-6">
+            <Button 
+              className="bg-white text-green-700 hover:bg-green-50 font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transform transition-all duration-300 hover:-translate-y-0.5"
+              onClick={() => navigate('/app')}
+            >
+              <span className="flex items-center">
+                <span className="mr-2">🚀</span>
+                Get Started - मुफ्त में शुरू करें
+              </span>
+            </Button>
+            <Button 
+              variant="outline"
+              className="border-2 border-white bg-transparent text-white hover:bg-white/10 font-bold py-4 px-8 rounded-full text-lg ml-4 transition-all duration-300 hover:-translate-y-0.5"
+            >
+              <span className="flex items-center">
+                <span className="mr-2">▶️</span>
+                Watch Demo
+              </span>
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      {/* Features Section */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="relative z-10 container mx-auto px-4">
+          <div className="text-center mb-16">
+            <span className="inline-block mb-3 text-sm font-semibold text-green-600 bg-green-100 px-4 py-1 rounded-full">
+              Why Choose Us
+            </span>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Empowering Farmers with <span className="text-green-600">Smart Solutions</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Our platform combines cutting-edge AI technology with agricultural expertise to provide comprehensive solutions for modern farming challenges.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <FeatureCard key={index} {...feature} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <span className="inline-block mb-3 text-sm font-semibold text-green-600 bg-green-50 px-4 py-1 rounded-full">
+              Farmer Testimonials
+            </span>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Success <span className="text-green-600">Stories</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Hear from farmers who have transformed their agricultural practices with our platform
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <TestimonialCard key={index} {...testimonial} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-green-600 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold mb-6">Ready to transform your farming experience?</h2>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">
+            Join thousands of farmers who are already increasing their yields with FarmLive.
+          </p>
+          <Button 
+            className="bg-white text-green-700 hover:bg-gray-100 font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transform transition-all duration-300 hover:-translate-y-1"
+            onClick={() => navigate('/app')}
+          >
+            Get Started Now
+          </Button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-gray-300 py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <h3 className="text-white text-lg font-semibold mb-4">FarmLive</h3>
+              <p className="mb-4">Empowering farmers with AI technology for better crop management and disease detection.</p>
+              <div className="flex space-x-4">
+                <a href="#" className="text-gray-400 hover:text-white">
+                  <span className="sr-only">Facebook</span>
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                  </svg>
+                </a>
+                <a href="#" className="text-gray-400 hover:text-white">
+                  <span className="sr-only">Twitter</span>
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                  </svg>
+                </a>
+                <a href="#" className="text-gray-400 hover:text-white">
+                  <span className="sr-only">YouTube</span>
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fillRule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 01-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 01-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 011.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418zM15.194 12 10 15V9l5.194 3z" clipRule="evenodd" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-white text-lg font-semibold mb-4">Quick Links</h3>
+              <ul className="space-y-2">
+                <li><a href="#" className="hover:text-white">About Us</a></li>
+                <li><a href="#" className="hover:text-white">Features</a></li>
+                <li><a href="#" className="hover:text-white">Pricing</a></li>
+                <li><a href="#" className="hover:text-white">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-white text-lg font-semibold mb-4">Contact Us</h3>
+              <address className="not-italic">
+                <p>Email: support@farmlive.in</p>
+                <p>Phone: +91-1800-FARM-LIVE</p>
+                <p>Address: FarmLive Innovations, New Delhi, India</p>
+              </address>
+            </div>
+            <div>
+              <h3 className="text-white text-lg font-semibold mb-4">Download App</h3>
+              <div className="space-y-4">
+                <a href="#" className="block bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-lg flex items-center">
+                  <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.97 1.5 2.98 3.64 3.47 2.22.51 2.38 1.37 2.38 1.81 0 .53-.48 1.22-2.1 1.22-1.56 0-2.22-.63-2.4-1.64H8.04c.16 2.05 1.61 2.8 2.86 3.09V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.08-1.48-2.96-3.66-3.4z"/>
+                  </svg>
+                  <div className="text-left">
+                    <div className="text-xs">Download on the</div>
+                    <div className="font-semibold">App Store</div>
+                  </div>
+                </a>
+                <a href="#" className="block bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-lg flex items-center">
+                  <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3.609 1.814L13.792 12 3.61 22.186a1.75 1.75 0 0 1-.61-1.32V3.134a1.75 1.75 0 0 1 .609-1.32zm.921 19.08L12 13.155l7.47 7.74a1.75 1.75 0 0 1-1.242.513H5.71a1.75 1.75 0 0 1-1.18-.464zM12 10.845L4.53 3.106a1.75 1.75 0 0 1 1.18-.464h12.518a1.75 1.75 0 0 1 1.242.512L12 10.845z"/>
+                  </svg>
+                  <div className="text-left">
+                    <div className="text-xs">Get it on</div>
+                    <div className="font-semibold">Google Play</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-gray-800 pt-8 text-center text-sm">
+            <p>© {new Date().getFullYear()} FarmLive Innovations. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default LandingPage;
