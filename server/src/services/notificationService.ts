@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Notification, { INotification } from '@/models/Notification';
 import User, { IUser } from '@/models/User';
 import { sendEmail } from '@/services/emailService';
@@ -10,10 +11,10 @@ interface NotificationData {
   priority: 'low' | 'medium' | 'high' | 'critical';
   title: string;
   message: string;
-  data?: any;
+  data?: Record<string, unknown>;
   channels: ('push' | 'sms' | 'email' | 'whatsapp' | 'in-app')[];
   targetAudience: {
-    userIds?: string[];
+    userIds?: (string | { toString(): string })[]; // Support both string and ObjectId
     roles?: ('farmer' | 'buyer' | 'admin' | 'agent')[];
     locations?: {
       states?: string[];
@@ -29,7 +30,7 @@ interface NotificationData {
   };
   actionRequired?: boolean;
   actionUrl?: string;
-  actionData?: any;
+  actionData?: Record<string, unknown>;
   expiresAt?: Date;
   sendAt?: Date;
 }
@@ -114,7 +115,7 @@ export class NotificationService {
 
       // Update notification delivery status
       const recipients = results.map((result, index) => ({
-        userId: filteredUsers[index]._id,
+        userId: new mongoose.Types.ObjectId(filteredUsers[index]._id),
         channels: notification.channels,
         delivered: result.status === 'fulfilled',
         deliveredAt: result.status === 'fulfilled' ? new Date() : undefined,
@@ -223,8 +224,8 @@ export class NotificationService {
   }
 
   // Get target users based on audience criteria
-  private static async getTargetUsers(targetAudience: any): Promise<IUser[]> {
-    let query: any = { isActive: true };
+  private static async getTargetUsers(targetAudience: NotificationData['targetAudience']): Promise<IUser[]> {
+    const query: Record<string, unknown> = { isActive: true };
 
     // If targeting all users
     if (targetAudience.all) {
@@ -246,7 +247,7 @@ export class NotificationService {
 
     // Location-based targeting
     if (targetAudience.locations) {
-      const locationQuery: any = {};
+      const locationQuery: Record<string, unknown> = {};
       
       if (targetAudience.locations.states) {
         locationQuery['profile.location.state'] = { $in: targetAudience.locations.states };
@@ -272,13 +273,14 @@ export class NotificationService {
 
     // Farm size
     if (targetAudience.farmSize) {
-      const farmSizeQuery: any = {};
+      const farmSizeQuery: Record<string, unknown> = {};
       if (targetAudience.farmSize.min !== undefined) {
         farmSizeQuery['profile.farmSize'] = { $gte: targetAudience.farmSize.min };
       }
       if (targetAudience.farmSize.max !== undefined) {
+        const existing = farmSizeQuery['profile.farmSize'] as Record<string, unknown> || {};
         farmSizeQuery['profile.farmSize'] = { 
-          ...farmSizeQuery['profile.farmSize'],
+          ...existing,
           $lte: targetAudience.farmSize.max 
         };
       }
@@ -423,7 +425,7 @@ export class NotificationService {
   }
 
   // Get user notifications
-  static async getUserNotifications(userId: string, page: number = 1, limit: number = 20): Promise<any[]> {
+  static async getUserNotifications(userId: string, page: number = 1, limit: number = 20): Promise<Record<string, unknown>[]> {
     try {
       const redisClient = getRedisClient();
       if (!redisClient) {
@@ -452,14 +454,19 @@ export class NotificationService {
   }
 
   // Send weather alert
-  static async sendWeatherAlert(weatherData: any): Promise<void> {
-    const { alertType, location, description, severity } = weatherData;
+  static async sendWeatherAlert(weatherData: Record<string, unknown>): Promise<void> {
+    const { alertType, location, description, severity } = weatherData as {
+      alertType: string;
+      location: { state: string; district?: string };
+      description: string;
+      severity: string;
+    };
 
     await this.createAndSend({
       type: 'weather',
       priority: severity === 'severe' ? 'critical' : 'high',
       title: `Weather Alert: ${alertType}`,
-      message: `${alertType} expected in ${location}. ${description}`,
+      message: `${alertType} expected in ${location.state}. ${description}`,
       data: weatherData,
       channels: ['push', 'sms', 'in-app'],
       targetAudience: {
@@ -474,8 +481,14 @@ export class NotificationService {
   }
 
   // Send market price alert
-  static async sendMarketAlert(marketData: any): Promise<void> {
-    const { crop, market, currentPrice, previousPrice, change } = marketData;
+  static async sendMarketAlert(marketData: Record<string, unknown>): Promise<void> {
+    const { crop, market, currentPrice, previousPrice, change } = marketData as {
+      crop: string;
+      market: string;
+      currentPrice: number;
+      previousPrice: number;
+      change: number;
+    };
 
     await this.createAndSend({
       type: 'market',
@@ -493,14 +506,19 @@ export class NotificationService {
   }
 
   // Send pest alert
-  static async sendPestAlert(pestData: any): Promise<void> {
-    const { pestName, location, affectedCrops, severity } = pestData;
+  static async sendPestAlert(pestData: Record<string, unknown>): Promise<void> {
+    const { pestName, location, affectedCrops, severity } = pestData as {
+      pestName: string;
+      location: { state: string; district?: string };
+      affectedCrops: string[];
+      severity: string;
+    };
 
     await this.createAndSend({
       type: 'pest',
       priority: severity === 'high' ? 'critical' : 'high',
       title: `Pest Alert: ${pestName}`,
-      message: `${pestName} outbreak reported in ${location}. Check your ${affectedCrops.join(', ')} crops immediately.`,
+      message: `${pestName} outbreak reported in ${location.state}. Check your ${affectedCrops.join(', ')} crops immediately.`,
       data: pestData,
       channels: ['push', 'sms', 'in-app'],
       targetAudience: {
