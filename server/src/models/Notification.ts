@@ -7,7 +7,7 @@ export interface INotification extends Document {
   priority: 'low' | 'medium' | 'high' | 'critical';
   title: string;
   message: string;
-  data?: any; // Additional data for the notification
+  data?: Record<string, unknown>; // Additional data for the notification
   channels: ('push' | 'sms' | 'email' | 'whatsapp' | 'in-app')[];
   targetAudience: {
     userIds?: mongoose.Types.ObjectId[];
@@ -65,7 +65,7 @@ export interface INotification extends Document {
   };
   actionRequired: boolean;
   actionUrl?: string;
-  actionData?: any;
+  actionData?: Record<string, unknown>;
   expiresAt?: Date;
   isActive: boolean;
   createdBy?: mongoose.Types.ObjectId;
