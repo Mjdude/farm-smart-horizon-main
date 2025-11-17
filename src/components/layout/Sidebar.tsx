@@ -9,7 +9,11 @@ import {
   Monitor,
   User,
   Database,
-  Search
+  Search,
+  FileText,
+  ShoppingCart,
+  DollarSign,
+  Bell
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -24,6 +28,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, activeSection, setActi
     { id: 'crop-monitoring', label: 'Crop Monitoring', icon: Calendar, color: 'text-green-600' },
     { id: 'market', label: 'Market Intelligence', icon: BarChart3, color: 'text-purple-600' },
     { id: 'weather', label: 'Weather Advisory', icon: Cloud, color: 'text-sky-600' },
+    { id: 'government-schemes', label: 'Gov Schemes', icon: FileText, color: 'text-emerald-600' },
+    { id: 'crop-trading', label: 'Crop Trading', icon: ShoppingCart, color: 'text-amber-600' },
+    { id: 'financial-assistance', label: 'Finance', icon: DollarSign, color: 'text-teal-600' },
+    { id: 'alerts-notifications', label: 'Alerts', icon: Bell, color: 'text-red-600' },
     { id: 'community', label: 'Community Hub', icon: Users, color: 'text-orange-600' },
     { id: 'ai-assistant', label: 'AI Assistant', icon: Search, color: 'text-indigo-600' },
     { id: 'she-farms', label: 'SheFarms', icon: User, color: 'text-pink-600' },
