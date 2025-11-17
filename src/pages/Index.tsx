@@ -9,6 +9,10 @@ import { WeatherAdvisory } from '@/components/weather/WeatherAdvisory';
 import { CommunityHub } from '@/components/community/CommunityHub';
 import { AIAssistant } from '@/components/ai/AIAssistant';
 import { SheFarms } from '@/components/special/SheFarms';
+import { GovernmentSchemes } from '@/components/schemes/GovernmentSchemes';
+import { CropTrading } from '@/components/trading/CropTrading';
+import { FinancialAssistance } from '@/components/finance/FinancialAssistance';
+import { AlertsNotifications } from '@/components/notifications/AlertsNotifications';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -30,6 +34,14 @@ const Index = () => {
         return <AIAssistant />;
       case 'she-farms':
         return <SheFarms />;
+      case 'government-schemes':
+        return <GovernmentSchemes />;
+      case 'crop-trading':
+        return <CropTrading />;
+      case 'financial-assistance':
+        return <FinancialAssistance />;
+      case 'alerts-notifications':
+        return <AlertsNotifications />;
       default:
         return <Dashboard />;
     }
