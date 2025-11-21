@@ -24,7 +24,7 @@ import notificationRoutes from '@/routes/notifications';
 import weatherRoutes from '@/routes/weather';
 import marketRoutes from '@/routes/market';
 import adminRoutes from '@/routes/admin';
-
+import predictionRoutes from '@/routes/prediction';
 // Load environment variables
 dotenv.config();
 
@@ -80,7 +80,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/weather', weatherRoutes);
 app.use('/api/market', marketRoutes);
 app.use('/api/admin', adminRoutes);
-
+app.use('/api', predictionRoutes);
 // Socket.IO for real-time features
 io.on('connection', (socket) => {
   logger.info(`User connected: ${socket.id}`);
@@ -113,7 +113,7 @@ const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
   logger.info(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
-  
+
   // Initialize cron jobs in production
   if (process.env.NODE_ENV === 'production') {
     CronService.init();
