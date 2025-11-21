@@ -1,43 +1,66 @@
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Progress } from '@/components/ui/progress';
+import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Heart,
+  Star,
+  Users,
+  FileText,
+  Clock,
+  Zap,
+  AlertCircle,
+  DollarSign,
+  Activity,
+  Video,
+  Apple,
+  TrendingUp,
+  Stethoscope,
+  Sun,
+  Moon,
+  Droplet,
+  Utensils,
+  CheckCircle
+} from 'lucide-react';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
-import React from 'react';
-import { Users, Star, Heart } from 'lucide-react';
+// Import the schemes and health components' logic
+import { WomenSchemes } from './WomenSchemes';
+import { WomenHealthCare } from './WomenHealthCare';
 
 export const SheFarms: React.FC = () => {
   return (
-    <div className="space-y-6">
-      <div className="bg-gradient-to-r from-pink-500 to-pink-400 rounded-2xl p-8 text-white">
-        <h1 className="text-3xl font-bold font-poppins mb-2">SheFarms Platform</h1>
-        <p className="text-pink-100 text-lg">Empowering women farmers with dedicated resources and community</p>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="metric-card">
-          <div className="flex items-center space-x-3 mb-4">
-            <Users className="text-pink-500" size={24} />
-            <h3 className="text-lg font-semibold">Women's Community</h3>
-          </div>
-          <p className="text-gray-600 mb-4">Connect with fellow women farmers and entrepreneurs</p>
-          <button className="farm-button w-full">Join Community</button>
-        </div>
 
-        <div className="metric-card">
-          <div className="flex items-center space-x-3 mb-4">
-            <Star className="text-yellow-500" size={24} />
-            <h3 className="text-lg font-semibold">Success Stories</h3>
-          </div>
-          <p className="text-gray-600 mb-4">Inspiring stories from women leading in agriculture</p>
-          <button className="farm-button w-full">Read Stories</button>
-        </div>
+    <Tabs defaultValue="schemes" className="space-y-6">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="schemes" className="flex items-center gap-2">
+          <Star className="h-4 w-4" />
+          Women Empowerment Schemes
+        </TabsTrigger>
+        <TabsTrigger value="health" className="flex items-center gap-2">
+          <Heart className="h-4 w-4" />
+          Health & Wellness
+        </TabsTrigger>
+      </TabsList>
 
-        <div className="metric-card">
-          <div className="flex items-center space-x-3 mb-4">
-            <Heart className="text-red-500" size={24} />
-            <h3 className="text-lg font-semibold">Mentorship Program</h3>
-          </div>
-          <p className="text-gray-600 mb-4">Find mentors and support for your farming journey</p>
-          <button className="farm-button w-full">Find Mentor</button>
-        </div>
-      </div>
-    </div>
+      <TabsContent value="schemes">
+        <WomenSchemes />
+      </TabsContent>
+
+      <TabsContent value="health">
+        <WomenHealthCare />
+      </TabsContent>
+    </Tabs>
+
   );
 };
