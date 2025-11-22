@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import {
     Heart,
     Activity,
@@ -21,6 +22,7 @@ import {
     Utensils
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { AdUnit } from '@/components/ui/ad-unit';
 
 interface HealthData {
     age: number;
@@ -109,6 +111,8 @@ const healthVideos: HealthVideo[] = [
     }
 ];
 
+const YOUTUBE_API_KEY = 'AIzaSyDpeCQD6jixnn5cblRdwdmH3GVvNtpM7v8';
+
 export const WomenHealthCare: React.FC = () => {
     const [healthData, setHealthData] = useState<HealthData>({
         age: 0,
@@ -124,6 +128,10 @@ export const WomenHealthCare: React.FC = () => {
 
     const [assessment, setAssessment] = useState<HealthAssessment | null>(null);
     const [showAssessment, setShowAssessment] = useState(false);
+    const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
+    const [isPlayerOpen, setIsPlayerOpen] = useState(false);
+    const [isLoadingVideo, setIsLoadingVideo] = useState(false);
+    const [isLoadingAssessment, setIsLoadingAssessment] = useState(false);
 
     const calculateBMI = (weight: number, height: number): number => {
         if (weight <= 0 || height <= 0) return 0;
@@ -221,33 +229,118 @@ export const WomenHealthCare: React.FC = () => {
         return suggestions;
     };
 
-    const handleAssessment = () => {
+    const handleAssessment = async () => {
         if (healthData.age <= 0 || healthData.weight <= 0 || healthData.height <= 0) {
             toast.error('Please fill in age, weight, and height to get assessment');
             return;
         }
 
-        const bmi = calculateBMI(healthData.weight, healthData.height);
-        const bmiCategory = getBMICategory(bmi);
-        const healthScore = calculateHealthScore(healthData, bmi);
-        const riskLevel = getRiskLevel(healthScore);
-        const suggestions = generateSuggestions(healthData, bmi, healthScore);
+        setIsLoadingAssessment(true);
 
-        setAssessment({
-            bmi: parseFloat(bmi.toFixed(1)),
-            bmiCategory,
-            healthScore,
-            riskLevel,
-            suggestions
-        });
+        try {
+            const bmi = calculateBMI(healthData.weight, healthData.height);
+            const bmiCategory = getBMICategory(bmi);
+            const healthScore = calculateHealthScore(healthData, bmi);
+            const riskLevel = getRiskLevel(healthScore);
 
-        setShowAssessment(true);
-        toast.success('Health assessment completed!');
+            // Initial local suggestions as fallback
+            let suggestions = generateSuggestions(healthData, bmi, healthScore);
+
+            // Call Gemini API for personalized suggestions
+            try {
+                const prompt = `
+                    Act as a health expert for women farmers. Analyze the following health data and provide 4-5 specific, actionable health tips and suggestions.
+                    
+                    Profile:
+                    - Age: ${healthData.age} years
+                    - Weight: ${healthData.weight} kg
+                    - Height: ${healthData.height} cm
+                    - BMI: ${bmi.toFixed(1)} (${bmiCategory})
+                    - Activity Level: ${healthData.activityLevel}
+                    - Sleep: ${healthData.sleepHours} hours
+                    - Water Intake: ${healthData.waterIntake} liters
+                    - Chronic Conditions: ${healthData.chronicConditions.join(', ') || 'None'}
+                    - Blood Pressure: ${healthData.bloodPressure || 'Not provided'}
+                    
+                    Format the response as a JSON array of strings, e.g., ["Tip 1", "Tip 2"]. Do not include any markdown formatting or explanations outside the array.
+                `;
+
+                const response = await fetch(
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${YOUTUBE_API_KEY}`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{
+                                    text: prompt
+                                }]
+                            }]
+                        })
+                    }
+                );
+
+                const data = await response.json();
+
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    const text = data.candidates[0].content.parts[0].text;
+                    // Clean up the text to ensure it's valid JSON
+                    const jsonStr = text.replace(/```json/g, '').replace(/```/g, '').trim();
+                    const apiSuggestions = JSON.parse(jsonStr);
+                    if (Array.isArray(apiSuggestions) && apiSuggestions.length > 0) {
+                        suggestions = apiSuggestions;
+                    }
+                }
+            } catch (apiError) {
+                console.error('Error fetching AI suggestions:', apiError);
+                toast.error('Could not generate AI suggestions, showing standard recommendations.');
+            }
+
+            setAssessment({
+                bmi: parseFloat(bmi.toFixed(1)),
+                bmiCategory,
+                healthScore,
+                riskLevel,
+                suggestions
+            });
+
+            setShowAssessment(true);
+            toast.success('Health assessment completed!');
+        } catch (error) {
+            console.error('Error in assessment:', error);
+            toast.error('Failed to complete assessment');
+        } finally {
+            setIsLoadingAssessment(false);
+        }
     };
 
     const handleInputChange = (field: keyof HealthData, value: any) => {
         setHealthData(prev => ({ ...prev, [field]: value }));
         setShowAssessment(false);
+    };
+
+    const handleWatchVideo = async (videoTitle: string) => {
+        setIsLoadingVideo(true);
+        try {
+            const response = await fetch(
+                `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(videoTitle)}&key=${YOUTUBE_API_KEY}&type=video&maxResults=1`
+            );
+            const data = await response.json();
+
+            if (data.items && data.items.length > 0) {
+                setSelectedVideoId(data.items[0].id.videoId);
+                setIsPlayerOpen(true);
+            } else {
+                toast.error('Video not found');
+            }
+        } catch (error) {
+            console.error('Error fetching video:', error);
+            toast.error('Failed to load video');
+        } finally {
+            setIsLoadingVideo(false);
+        }
     };
 
     return (
@@ -260,6 +353,8 @@ export const WomenHealthCare: React.FC = () => {
                 </div>
                 <p className="text-pink-100 text-lg">Track your health, get personalized suggestions, and learn about preventive care</p>
             </div>
+
+            <AdUnit format="horizontal" slotId="women-health-header-ad" />
 
             <Tabs defaultValue="assessment" className="space-y-6">
                 <TabsList className="grid w-full grid-cols-2">
@@ -386,9 +481,19 @@ export const WomenHealthCare: React.FC = () => {
                                 onClick={handleAssessment}
                                 className="w-full bg-pink-500 hover:bg-pink-600"
                                 size="lg"
+                                disabled={isLoadingAssessment}
                             >
-                                <Activity className="h-5 w-5 mr-2" />
-                                Get Health Assessment
+                                {isLoadingAssessment ? (
+                                    <>
+                                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                                        Analyzing Health Data...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Activity className="h-5 w-5 mr-2" />
+                                        Get Health Assessment
+                                    </>
+                                )}
                             </Button>
                         </CardContent>
                     </Card>
@@ -523,10 +628,11 @@ export const WomenHealthCare: React.FC = () => {
                                             </div>
                                             <Button
                                                 className="w-full mt-4 bg-pink-500 hover:bg-pink-600"
-                                                onClick={() => toast.info('Video player will open here')}
+                                                onClick={() => handleWatchVideo(video.title)}
+                                                disabled={isLoadingVideo}
                                             >
                                                 <Video className="h-4 w-4 mr-2" />
-                                                Watch Video
+                                                {isLoadingVideo ? 'Loading...' : 'Watch Video'}
                                             </Button>
                                         </CardContent>
                                     </Card>
@@ -578,6 +684,31 @@ export const WomenHealthCare: React.FC = () => {
                     </Card>
                 </TabsContent>
             </Tabs>
+            {/* Video Player Dialog */}
+            <Dialog open={isPlayerOpen} onOpenChange={setIsPlayerOpen}>
+                <DialogContent className="sm:max-w-[800px]">
+                    <DialogHeader>
+                        <DialogTitle>Health Awareness Video</DialogTitle>
+                        <DialogDescription>
+                            Watch this educational video to learn more about women's health in agriculture
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="aspect-video w-full">
+                        {selectedVideoId && (
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                src={`https://www.youtube.com/embed/${selectedVideoId}?autoplay=1`}
+                                title="YouTube video player"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                className="rounded-lg"
+                            ></iframe>
+                        )}
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };

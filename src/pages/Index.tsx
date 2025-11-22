@@ -13,6 +13,7 @@ import { GovernmentSchemes } from '@/components/schemes/GovernmentSchemes';
 import { CropTrading } from '@/components/trading/CropTrading';
 import { FinancialAssistance } from '@/components/finance/FinancialAssistance';
 import { AlertsNotifications } from '@/components/notifications/AlertsNotifications';
+import { AdUnit } from '@/components/ui/ad-unit';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -49,23 +50,23 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header 
-        sidebarOpen={sidebarOpen} 
+      <Header
+        sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
         activeSection={activeSection}
       />
-      
+
       <div className="flex h-screen pt-16">
-        <Sidebar 
+        <Sidebar
           isOpen={sidebarOpen}
           activeSection={activeSection}
           setActiveSection={setActiveSection}
         />
-        
-        <main className={`flex-1 overflow-auto transition-all duration-300 ${
-          sidebarOpen ? 'ml-64' : 'ml-16'
-        }`}>
+
+        <main className={`flex-1 overflow-auto transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-16'
+          }`}>
           <div className="p-6">
+            <AdUnit format="horizontal" slotId="main-header-ad" className="mb-6" />
             {renderContent()}
           </div>
         </main>
