@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-
-import React from 'react';
-import { Camera, MapPin, Calendar, TrendingUp } from 'lucide-react';
-
-export const CropMonitoring: React.FC = () => {
-=======
 import React, { useState, useRef } from 'react';
 import { Camera, MapPin, Calendar, TrendingUp, Upload, AlertCircle, CheckCircle, Loader, X } from 'lucide-react';
 
@@ -70,7 +63,6 @@ export const CropMonitoring: React.FC = () => {
     fileInputRef.current?.click();
   };
 
->>>>>>> e2c87b8dc1a5ccccc58e721317455cd0e1d22578
   return (
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-green-500 to-green-400 rounded-2xl p-8 text-white">
@@ -82,12 +74,6 @@ export const CropMonitoring: React.FC = () => {
         <div className="metric-card">
           <div className="flex items-center space-x-3 mb-4">
             <Camera className="text-green-500" size={24} />
-<<<<<<< HEAD
-            <h3 className="text-lg font-semibold">Photo Analysis</h3>
-          </div>
-          <p className="text-gray-600 mb-4">Upload crop images for AI-powered disease detection</p>
-          <button className="farm-button w-full">Upload Photos</button>
-=======
             <h3 className="text-lg font-semibold">Disease Detection</h3>
           </div>
           <p className="text-gray-600 mb-4">Upload crop images for AI-powered disease detection and treatment recommendations</p>
@@ -98,14 +84,13 @@ export const CropMonitoring: React.FC = () => {
             onChange={handleImageSelect}
             className="hidden"
           />
-          <button 
+          <button
             onClick={openFileDialog}
             className="farm-button w-full flex items-center justify-center space-x-2"
           >
             <Upload size={20} />
             <span>Upload Crop Photo</span>
           </button>
->>>>>>> e2c87b8dc1a5ccccc58e721317455cd0e1d22578
         </div>
 
         <div className="metric-card">
@@ -113,29 +98,13 @@ export const CropMonitoring: React.FC = () => {
             <MapPin className="text-blue-500" size={24} />
             <h3 className="text-lg font-semibold">Field Mapping</h3>
           </div>
-<<<<<<< HEAD
-          <p className="text-gray-600 mb-4">Interactive maps with crop status indicators</p>
-          <button className="farm-button w-full">View Maps</button>
-=======
           <p className="text-gray-600 mb-4">Interactive maps with crop status indicators and disease outbreak zones</p>
           <button className="farm-button w-full">View Disease Maps</button>
->>>>>>> e2c87b8dc1a5ccccc58e721317455cd0e1d22578
         </div>
 
         <div className="metric-card">
           <div className="flex items-center space-x-3 mb-4">
             <TrendingUp className="text-purple-500" size={24} />
-<<<<<<< HEAD
-            <h3 className="text-lg font-semibold">Growth Tracking</h3>
-          </div>
-          <p className="text-gray-600 mb-4">Monitor crop development and yield predictions</p>
-          <button className="farm-button w-full">View Analytics</button>
-        </div>
-      </div>
-    </div>
-  );
-};
-=======
             <h3 className="text-lg font-semibold">Health Analytics</h3>
           </div>
           <p className="text-gray-600 mb-4">Monitor crop health trends, treatment effectiveness, and yield predictions</p>
@@ -225,22 +194,21 @@ export const CropMonitoring: React.FC = () => {
                       <CheckCircle className="text-green-500 mr-2" size={24} />
                       <h3 className="text-xl font-semibold">Analysis Complete</h3>
                     </div>
-                    
+
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <h4 className="font-semibold text-gray-700 mb-2">Detected Condition:</h4>
                         <p className="text-lg font-bold text-gray-900 mb-4">
                           {prediction.disease.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').trim()}
                         </p>
-                        
+
                         <h4 className="font-semibold text-gray-700 mb-2">Confidence Level:</h4>
                         <div className="flex items-center mb-4">
                           <div className="w-full bg-gray-200 rounded-full h-3 mr-3">
                             <div
-                              className={`h-3 rounded-full ${
-                                prediction.confidence > 80 ? 'bg-green-500' :
-                                prediction.confidence > 60 ? 'bg-yellow-500' : 'bg-red-500'
-                              }`}
+                              className={`h-3 rounded-full ${prediction.confidence > 80 ? 'bg-green-500' :
+                                  prediction.confidence > 60 ? 'bg-yellow-500' : 'bg-red-500'
+                                }`}
                               style={{ width: `${prediction.confidence}%` }}
                             ></div>
                           </div>
@@ -249,13 +217,13 @@ export const CropMonitoring: React.FC = () => {
                           </span>
                         </div>
                       </div>
-                      
+
                       <div>
                         <h4 className="font-semibold text-gray-700 mb-2">Recommended Treatment:</h4>
                         <p className="text-gray-600 mb-4 bg-blue-50 p-3 rounded-lg">
                           {prediction.treatment}
                         </p>
-                        
+
                         {prediction.recommendations && (
                           <>
                             <h4 className="font-semibold text-gray-700 mb-2">Additional Steps:</h4>
@@ -290,4 +258,3 @@ export const CropMonitoring: React.FC = () => {
     </div>
   );
 };
->>>>>>> e2c87b8dc1a5ccccc58e721317455cd0e1d22578
